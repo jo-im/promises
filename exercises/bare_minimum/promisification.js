@@ -16,47 +16,73 @@ var getGitHubProfileAsync = function(user, callback) {
     json: true  // will JSON.parse(body) for us
   };
 
-  request.get(options, function(err, res, body) {
-    if (err) {
-      callback(err, null);
-    } else if (body.message) {
-      callback(new Error('Failed to get GitHub profile: ' + body.message), null);
-    } else {
-      callback(null, body);
-    }
-  });
+  return new Promise(function(resolve, reject) {
+    request.get(options, function(err, res, body) {
+      if (err) {
+        reject(err);
+      } else if (body.message) {
+        reject(new Error('Failed to get GitHub profile: ' + body.message), null);
+      } else {
+        console.log('body is', body);
+        resolve(body);
+      }
+    });
+  })
 };
 
-var getGitHubProfileAsync; // TODO
+getGitHubProfileAsync().then(function(body) {
+  return body.id;
+}).catch(function(err) {
+  console.log('Unable to get user\'s id');
+})
+// .then(function()); // TODO
 
 
 // (2) Asyncronous token generation
 var generateRandomTokenAsync = function(callback) {
-  crypto.randomBytes(20, function(err, buffer) {
-    if (err) { return callback(err, null); }
-    callback(null, buffer.toString('hex'));
+  return new Promise(function(resolve, reject) {
+    crypto.randomBytes(20, function(err, buffer) {
+      if (err) { 
+        reject(err); 
+      } else {
+        console.log('BUFFER', buffer.toString('hex'));
+        resolve(buffer.toString('hex'));
+      }  
+    });
   });
 };
 
-var generateRandomTokenAsync; // TODO
+generateRandomTokenAsync().then(function(token) {
+  return token;
+}).catch(function(error) {
+  console.log('unable to get token: ' + error);
+}) // TODO
 
 
 // (3) Asyncronous file manipulation
 var readFileAndMakeItFunnyAsync = function(filePath, callback) {
-  fs.readFile(filePath, 'utf8', function(err, file) {
-    if (err) { return callback(err); }
-   
-    var funnyFile = file.split('\n')
-      .map(function(line) {
-        return line + ' lol';
-      })
-      .join('\n');
-
-    callback(funnyFile);
+  return new Promise(function(resolve, reject) {
+    fs.readFile(filePath, function(err, file) {
+        if (err) { 
+          reject(err); 
+        } else {
+         file = file.toString();
+         var funnyFile = file.split('\n')
+           .map(function(line) {
+             return line + ' lol';
+           })
+           .join('\n');
+         resolve(funnyFile);
+        }
+    });
   });
 };
 
-var readFileAndMakeItFunnyAsync; // TODO
+readFileAndMakeItFunnyAsync().then(function(funnyFile) {
+  return funnyFile;
+}).catch(function(error) {
+  console.log('error: ', error);
+}); // TODO
 
 // Export these functions so we can test them and reuse them in later exercises
 module.exports = {
