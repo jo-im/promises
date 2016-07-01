@@ -14,13 +14,11 @@ var pluckFirstLineFromFile = function (filePath, callback) {
     if (err) {
       callback(err);
     } else {
-      console.log('data is', data);
       var stringedData = '';
       stringedData += data;
+      stringedData = stringedData.split('\n');
+      callback(err, stringedData[0]);
     }
-    var stringedData = stringedData.split('\n');
-    console.log('stringedData is', stringedData);
-    callback(err, stringedData[0]);
   });
 };
 

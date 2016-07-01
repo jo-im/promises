@@ -9,7 +9,7 @@ var crypto = require('crypto');
 var Promise = require('bluebird');
 
 // (1) Asyncronous HTTP request
-var getGitHubProfile = function(user, callback) {
+var getGitHubProfileAsync = function(user, callback) {
   var options = {
     url: 'https://api.github.com/users/' + user,
     headers: { 'User-Agent': 'request' },
@@ -31,18 +31,18 @@ var getGitHubProfileAsync; // TODO
 
 
 // (2) Asyncronous token generation
-var generateRandomToken = function(callback) {
+var generateRandomTokenAsync = function(callback) {
   crypto.randomBytes(20, function(err, buffer) {
     if (err) { return callback(err, null); }
     callback(null, buffer.toString('hex'));
   });
 };
 
-var getGitHubProfileAsync; // TODO
+var generateRandomTokenAsync; // TODO
 
 
 // (3) Asyncronous file manipulation
-var readFileAndMakeItFunny = function(filePath, callback) {
+var readFileAndMakeItFunnyAsync = function(filePath, callback) {
   fs.readFile(filePath, 'utf8', function(err, file) {
     if (err) { return callback(err); }
    
