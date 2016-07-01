@@ -16,10 +16,10 @@ var pluckFirstLineFromFileAsync = function(filePath, callback) {
       if (err) {
         reject(err);
       } else {
-      	var stringedData = '';
-      	stringedData += data;
-      	stringedData = stringedData.split('\n');
-      	resolve(stringedData[0]);
+        var stringedData = '';
+        stringedData += data;
+        stringedData = stringedData.split('\n');
+        resolve(stringedData[0]);
       }
     });
   });
